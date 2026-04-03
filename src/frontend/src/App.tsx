@@ -13,12 +13,14 @@ import {
 } from "lucide-react";
 import React from "react";
 import { useEffect, useState } from "react";
+import BtmNetworkLayer from "./components/BtmNetworkLayer";
 import { CanisterGrid } from "./components/CanisterGrid";
+import CycleManager from "./components/CycleManager";
 import { DefenseScore } from "./components/DefenseScore";
-import { GenesisMission } from "./components/GenesisMission";
 import { HoneypotVisualizer } from "./components/HoneypotVisualizer";
 import { NagaTopology } from "./components/NagaTopology";
 import { RawTelemetry } from "./components/RawTelemetry";
+import RootNeuron from "./components/RootNeuron";
 import { ThreatLog } from "./components/ThreatLog";
 import { VaultIntegrity } from "./components/VaultIntegrity";
 import { useLiveCanisters } from "./hooks/useLiveCanisters";
@@ -31,6 +33,9 @@ type Tab =
   | "HONEYPOT"
   | "THREAT LOG"
   | "POC OVERVIEW"
+  | "ROOT NEURON"
+  | "CYCLES"
+  | "BTM NETWORK"
   | "RAW TELEMETRY";
 
 function formatCyclesShort(n: number) {
@@ -509,6 +514,9 @@ export default function App() {
     "HONEYPOT",
     "THREAT LOG",
     "POC OVERVIEW",
+    "ROOT NEURON",
+    "CYCLES",
+    "BTM NETWORK",
     "RAW TELEMETRY",
   ];
 
@@ -1141,7 +1149,7 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <VaultIntegrity
                     integrity={sim.systemIntegrity}
                     cycleBalance={liveData.cycleAirdropperCycles}
@@ -1151,12 +1159,6 @@ export default function App() {
                     cycleBurnDelta={liveData.cycleBurnDelta}
                     neutralizedCount={sim.neutralizedCount}
                     nakaResponseTime={sim.nakaResponseTime}
-                  />
-                  <GenesisMission
-                    sovereignMetrics={liveData.sovereignMetrics}
-                    isControllerAuthenticated={
-                      liveData.isControllerAuthenticated
-                    }
                   />
                 </div>
               </div>
@@ -1332,57 +1334,70 @@ export default function App() {
                 <NagaShieldPanel telemetry={liveData.nagaShieldTelemetry} />
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <GenesisMission
-                    sovereignMetrics={liveData.sovereignMetrics}
-                    isControllerAuthenticated={
-                      liveData.isControllerAuthenticated
-                    }
+                  <VaultIntegrity
+                    integrity={sim.systemIntegrity}
+                    cycleBalance={liveData.cycleAirdropperCycles}
                   />
-                  <div className="space-y-4">
-                    <VaultIntegrity
-                      integrity={sim.systemIntegrity}
-                      cycleBalance={liveData.cycleAirdropperCycles}
-                    />
-                    <DefenseScore
-                      meshResonanceScore={liveData.meshResonanceScore}
-                      cycleBurnDelta={liveData.cycleBurnDelta}
-                      neutralizedCount={sim.neutralizedCount}
-                      nakaResponseTime={sim.nakaResponseTime}
-                    />
-                  </div>
+                  <DefenseScore
+                    meshResonanceScore={liveData.meshResonanceScore}
+                    cycleBurnDelta={liveData.cycleBurnDelta}
+                    neutralizedCount={sim.neutralizedCount}
+                    nakaResponseTime={sim.nakaResponseTime}
+                  />
                 </div>
               </div>
             )}
-          </div>
 
-          {/* RAW TELEMETRY */}
-          {activeTab === "RAW TELEMETRY" && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2
-                    className="font-orbitron font-bold text-naga-cyan"
-                    style={{ fontSize: "16px", letterSpacing: "0.1em" }}
-                  >
-                    RAW TELEMETRY INSPECTOR
-                  </h2>
-                  <p
-                    className="text-naga-muted mt-0.5"
-                    style={{ fontSize: "11px" }}
-                  >
-                    Live on-chain responses from all 17 canisters —
-                    audit-verifiable, zero simulation
-                  </p>
-                </div>
+            {/* ROOT NEURON */}
+            {activeTab === "ROOT NEURON" && (
+              <div className="space-y-4">
+                <RootNeuron />
               </div>
-              <RawTelemetry
-                rawResults={liveData.rawResults}
-                lastFetched={liveData.lastFetched}
-                meshResonanceScore={liveData.meshResonanceScore}
-                isLoading={liveData.isLoading}
-              />
-            </div>
-          )}
+            )}
+
+            {/* CYCLES */}
+            {activeTab === "CYCLES" && (
+              <div className="space-y-4">
+                <CycleManager />
+              </div>
+            )}
+
+            {/* BTM NETWORK */}
+            {activeTab === "BTM NETWORK" && (
+              <div className="space-y-4">
+                <BtmNetworkLayer />
+              </div>
+            )}
+
+            {/* RAW TELEMETRY */}
+            {activeTab === "RAW TELEMETRY" && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2
+                      className="font-orbitron font-bold text-naga-cyan"
+                      style={{ fontSize: "16px", letterSpacing: "0.1em" }}
+                    >
+                      RAW TELEMETRY INSPECTOR
+                    </h2>
+                    <p
+                      className="text-naga-muted mt-0.5"
+                      style={{ fontSize: "11px" }}
+                    >
+                      Live on-chain responses from all 17 canisters —
+                      audit-verifiable, zero simulation
+                    </p>
+                  </div>
+                </div>
+                <RawTelemetry
+                  rawResults={liveData.rawResults}
+                  lastFetched={liveData.lastFetched}
+                  meshResonanceScore={liveData.meshResonanceScore}
+                  isLoading={liveData.isLoading}
+                />
+              </div>
+            )}
+          </div>
 
           {/* FOOTER */}
           <footer

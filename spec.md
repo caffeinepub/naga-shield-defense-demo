@@ -1,32 +1,23 @@
-# Naga Shield Defense Demo
+# Naga Shield Defense Demo — BTM Network Layer + Root Neuron Failure Sim
 
 ## Current State
-SROS Layer 2 Security Mesh dashboard with 17 live-polled ICP mainnet canisters. All method signatures previously verified except `naga_shield`, which was incorrectly calling `get_telemetry()` — a method that does not exist on the deployed canister. The live telemetry has been silently failing since integration.
+The dashboard has 8 tabs: OVERVIEW, CANISTERS, HONEYPOT, THREAT LOG, POC OVERVIEW, RAW TELEMETRY, ROOT NEURON, CYCLES. The ROOT NEURON tab has a working Hash Simulator + Secondary Ledger pipeline (VALIDATED → SEALED → DEPLOYED). The CYCLES tab has live canister cycle monitoring with autonomous root neuron top-up pipeline.
 
 ## Requested Changes (Diff)
 
 ### Add
-- `validate_handshake(text) -> bool` to the `naga_shield` IDL and actor interface
-- `LiveFireTest` component: a button that calls `validate_handshake("SROS_PROBE_GENESIS_MISSION")` on the real mainnet canister and displays the live boolean result with timestamp — provides real, on-chain, demonstrable proof of the DRE enforcement mechanism
-- `getNagaShieldActor` imported into `App.tsx` for the LiveFireTest component
+- **BTM NETWORK LAYER tab** (9th tab): Shows the 17-canister mesh reframed as a Layer 2 non-invasive BTM energy coordination overlay. Panels include: Coordination Flow diagram (grid signal → AI core → shield → signer → execution → ledger), Canister Role Mapping table (security role → BTM energy role), Pre-Approved Action Registry (simulated known grid conditions + pre-hashed responses), and a live Coordination Event Feed. This tab proves the architecture is universal — same mesh, different payload.
+- **Failure Scenario Library in ROOT NEURON tab**: A collapsible panel above the Hash Simulator with pre-built failure mode templates. Each scenario includes: a problem signature label, a description of what can go wrong, and a pre-written fix payload. Clicking "Load Scenario" auto-populates the Hash Simulator fields. Scenarios cover: reentrancy attack, cycle drain, signal spoofing, unauthorized dispatch, threshold breach, node dropout, hash mismatch, ledger desync. User can compute hash, commit, and simulate autonomous deployment from any loaded scenario.
 
 ### Modify
-- `naga_shield` IDL: replace `get_telemetry()` (wrong method name, was silently failing) with verified `get_status() -> ShieldStatus` where ShieldStatus = `{ mesh_integrity: text, active_traps: nat64, neutralized_threats: nat64 }`
-- `NagaShieldStatus` interface replaces `NagaShieldTelemetry` with correct fields: `mesh_integrity`, `active_traps`, `neutralized_threats`
-- `NagaShieldActor` interface: updated methods to `get_status()` and `validate_handshake(text)`
-- `useLiveCanisters`: calls `get_status()` instead of `get_telemetry()`; parses `meshIntegrity`, `activeTraps`, `neutralizedThreats`
-- All field references across `App.tsx`, `CanisterGrid.tsx`: updated to new field names
-- `NagaShieldPanel` now renders the `LiveFireTest` button below the metrics grid
-- CALL_META entry for naga_shield updated to reflect `get_status()` in the Raw Telemetry tab
+- ROOT NEURON tab: Add Failure Scenario Library panel above the existing Hash Simulator.
+- App.tsx tab list: Add "BTM NETWORK" as a new tab between CYCLES and RAW TELEMETRY (or at end).
 
 ### Remove
-- `NagaShieldTelemetry` type (replaced by `NagaShieldStatus`)
-- Old `get_telemetry` IDL definition
+- Nothing removed.
 
 ## Implementation Plan
-1. Fix `nagaShieldIDL` in `canisters.ts` to match verified Candid interface
-2. Replace `NagaShieldTelemetry` with `NagaShieldStatus` type; update `NagaShieldActor`
-3. Update `useLiveCanisters` to call `get_status()` and parse correct fields
-4. Rename all field references in `App.tsx` and `CanisterGrid.tsx`
-5. Add `LiveFireTest` stateful component to `App.tsx` (idle/firing/accepted/rejected/error states)
-6. Wire `LiveFireTest` into `NagaShieldPanel` below the metrics row
+1. Create `src/frontend/src/components/FailureScenarioLibrary.tsx` — collapsible panel with 8 pre-coded failure scenarios, each with Load button that populates parent state.
+2. Update `RootNeuron.tsx` — accept optional `onLoadScenario` callback and render FailureScenarioLibrary above the Hash Simulator, passing loaded scenario data into the hash simulator fields.
+3. Create `src/frontend/src/components/BtmNetworkLayer.tsx` — full BTM Layer 2 tab with: coordination flow visualization, canister role mapping table, pre-approved action registry (simulated grid conditions), live coordination event feed (auto-scrolling simulated events showing the pipeline firing).
+4. Update `App.tsx` — add "BTM NETWORK" to Tab type and tabs array, add render block for `<BtmNetworkLayer />`.

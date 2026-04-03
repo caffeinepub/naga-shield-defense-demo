@@ -406,3 +406,135 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(41, 214, 255, 0.5);
 }
+
+/* ===== Print / PDF Export ===== */
+@page {
+  margin: 1in;
+  size: letter;
+}
+
+@media print {
+  /* Hide all body children by default */
+  body > * {
+    display: none !important;
+  }
+
+  /* Hide scan overlay, animations, and UI chrome unconditionally */
+  .scan-overlay,
+  .print-hide {
+    display: none !important;
+  }
+
+  /* Show only the print-target element */
+  .print-target {
+    display: block !important;
+    position: static !important;
+    overflow: visible !important;
+  }
+
+  /* For deeply-nested print-target (inside tabs / divs) */
+  .print-target,
+  .print-target * {
+    visibility: visible;
+  }
+
+  /* When print-target is not a direct body child,
+     reveal all ancestors up to body */
+  body,
+  #root,
+  #root > *,
+  #root > * > *,
+  #root > * > * > *,
+  #root > * > * > * > * {
+    display: block !important;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* Force white/light background for print readability */
+  body {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #111111 !important;
+  }
+
+  .print-target {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #111111 !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  /* Map HUD color classes to print-safe equivalents */
+  .print-target .text-naga-cyan,
+  .print-target .text-naga-teal,
+  .print-target .text-naga-green,
+  .print-target .text-naga-blue {
+    color: #004d7a !important;
+  }
+
+  .print-target .text-naga-amber {
+    color: #7a4f00 !important;
+  }
+
+  .print-target .text-naga-red {
+    color: #7a1a1a !important;
+  }
+
+  .print-target .text-naga-muted,
+  .print-target .text-naga-secondary {
+    color: #555555 !important;
+  }
+
+  /* Strip dark backgrounds from cards */
+  .print-target .card-hud,
+  .print-target [style*="background"],
+  .print-target [class*="card-hud"] {
+    background: #f8f9fa !important;
+    background-image: none !important;
+    border-color: #cccccc !important;
+    box-shadow: none !important;
+  }
+
+  /* Kill all animations and glows */
+  .print-target *,
+  .print-target *::before,
+  .print-target *::after {
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Hide interactive-only elements */
+  .print-target .status-dot {
+    display: none !important;
+  }
+
+  /* Print header — injected via ::before on the print-target */
+  .print-target::before {
+    content: "SROS \2014 SOVEREIGN RESONANT OPERATING SYSTEM\A"
+      "Architect: Sophors  |  Principal Systems Practitioner\A"
+      attr(data-print-date);
+    display: block !important;
+    white-space: pre;
+    font-family: "Courier New", monospace;
+    font-size: 10pt;
+    color: #111111 !important;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 8pt;
+    margin-bottom: 16pt;
+    letter-spacing: 0.05em;
+  }
+
+  /* Page breaks */
+  .print-target > * {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
