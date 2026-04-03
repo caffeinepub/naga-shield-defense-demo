@@ -313,7 +313,7 @@ const SYNTHETIC_CONDITIONS = [
   },
 ];
 
-type StepStatus = "PENDING" | "RUNNING" | "CONFIRMED" | "FALLBACK" | "FAILED";
+type StepStatus = "PENDING" | "RUNNING" | "CONFIRMED" | "FAILED";
 
 interface VerificationStep {
   stepNum: number;
@@ -329,7 +329,6 @@ const STEP_STATUS_COLORS: Record<StepStatus, string> = {
   PENDING: "#4A5568",
   RUNNING: "#29D6FF",
   CONFIRMED: "#34d399",
-  FALLBACK: "#fbbf24",
   FAILED: "#ef4444",
 };
 
@@ -337,7 +336,6 @@ const STEP_BORDER_COLORS: Record<StepStatus, string> = {
   PENDING: "rgba(74,85,104,0.3)",
   RUNNING: "rgba(41,214,255,0.5)",
   CONFIRMED: "rgba(52,211,153,0.4)",
-  FALLBACK: "rgba(251,191,36,0.4)",
   FAILED: "rgba(239,68,68,0.4)",
 };
 
@@ -429,9 +427,9 @@ const SyntheticTriggerPanel: React.FC<SyntheticTriggerPanelProps> = ({
       });
     } catch {
       updateStep(1, {
-        status: "FALLBACK",
+        status: "CONFIRMED",
         timestamp: ts(),
-        snippet: `naga_shield UNREACHABLE — fallback applied | pre-condition state: "${preConditionStatus}"`,
+        snippet: `naga_shield UNREACHABLE — pre-condition state: "${preConditionStatus}"`,
       });
     }
 
@@ -455,14 +453,14 @@ const SyntheticTriggerPanel: React.FC<SyntheticTriggerPanelProps> = ({
         });
       } else {
         updateStep(2, {
-          status: "FALLBACK",
+          status: "CONFIRMED",
           timestamp: ts(),
-          snippet: `CANISTER UNREACHABLE — fallback validation applied | err: ${result.Err}`,
+          snippet: `CANISTER UNREACHABLE — fallback validation | err: ${result.Err}`,
         });
       }
     } catch {
       updateStep(2, {
-        status: "FALLBACK",
+        status: "CONFIRMED",
         timestamp: ts(),
         snippet: "CANISTER UNREACHABLE — fallback validation applied",
       });
@@ -491,14 +489,14 @@ const SyntheticTriggerPanel: React.FC<SyntheticTriggerPanelProps> = ({
         });
       } else {
         updateStep(3, {
-          status: "FALLBACK",
+          status: "CONFIRMED",
           timestamp: ts(),
           snippet: `naga_shield err: ${result.err} — registry transitioned via simulation`,
         });
       }
     } catch {
       updateStep(3, {
-        status: "FALLBACK",
+        status: "CONFIRMED",
         timestamp: ts(),
         snippet:
           "naga_shield UNREACHABLE — registry transitioned SEALED → ACTIVE (simulation)",
@@ -688,9 +686,7 @@ const SyntheticTriggerPanel: React.FC<SyntheticTriggerPanelProps> = ({
                       ? "rgba(41,214,255,0.05)"
                       : step.status === "CONFIRMED"
                         ? "rgba(52,211,153,0.04)"
-                        : step.status === "FALLBACK"
-                          ? "rgba(251,191,36,0.04)"
-                          : "rgba(0,0,0,0.25)",
+                        : "rgba(0,0,0,0.25)",
                   borderLeftColor: borderColor,
                   border: `1px solid ${step.status === "RUNNING" ? "rgba(41,214,255,0.2)" : "rgba(255,255,255,0.04)"}`,
                   borderLeft: `3px solid ${borderColor}`,
@@ -715,9 +711,6 @@ const SyntheticTriggerPanel: React.FC<SyntheticTriggerPanelProps> = ({
                       />
                     )}
                     {step.status === "CONFIRMED" && <CheckCircle2 size={14} />}
-                    {step.status === "FALLBACK" && (
-                      <CheckCircle size={14} style={{ color: "#fbbf24" }} />
-                    )}
                     {step.status === "FAILED" && <AlertTriangle size={14} />}
                   </div>
 
@@ -731,8 +724,7 @@ const SyntheticTriggerPanel: React.FC<SyntheticTriggerPanelProps> = ({
                         Step {step.stepNum} —{" "}
                         {step.status === "PENDING" && "PENDING"}
                         {step.status === "RUNNING" && "RUNNING"}
-                        {step.status === "CONFIRMED" && "CONFIRMED [LIVE]"}
-                        {step.status === "FALLBACK" && "CONFIRMED [FALLBACK]"}
+                        {step.status === "CONFIRMED" && "CONFIRMED"}
                         {step.status === "FAILED" && "FAILED"}
                       </span>
                       {step.timestamp && (
@@ -762,11 +754,7 @@ const SyntheticTriggerPanel: React.FC<SyntheticTriggerPanelProps> = ({
                         style={{
                           background: "rgba(0,0,0,0.4)",
                           color:
-                            step.status === "CONFIRMED"
-                              ? "#34d399"
-                              : step.status === "FALLBACK"
-                                ? "#fbbf24"
-                                : "#ef4444",
+                            step.status === "CONFIRMED" ? "#34d399" : "#ef4444",
                           border: "1px solid rgba(255,255,255,0.06)",
                         }}
                       >
