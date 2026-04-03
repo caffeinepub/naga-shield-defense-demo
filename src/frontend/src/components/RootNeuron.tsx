@@ -1,6 +1,7 @@
 import { Database, Shield, Zap } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
+import { getSovereignSignerActor } from "../lib/canisters";
 import { FailureScenarioLibrary } from "./FailureScenarioLibrary";
 
 interface LedgerEntry {
@@ -9,6 +10,7 @@ interface LedgerEntry {
   solutionHash: string;
   status: "PENDING" | "VALIDATED" | "SEALED" | "DEPLOYED";
   timestamp: string;
+  validationMode?: "LIVE" | "FALLBACK";
 }
 
 const RootNeuron: React.FC = () => {
@@ -65,23 +67,38 @@ const RootNeuron: React.FC = () => {
 
   const simulateDeployment = async (id: string) => {
     setIsSimulating(true);
-    const updateStatus = (status: LedgerEntry["status"]) => {
+    const updateStatus = (
+      status: LedgerEntry["status"],
+      extra?: Partial<LedgerEntry>,
+    ) => {
       setLedger((prev) =>
-        prev.map((e) => (e.id === id ? { ...e, status } : e)),
+        prev.map((e) => (e.id === id ? { ...e, status, ...extra } : e)),
       );
     };
 
-    // Phase 1: Root Neuron Validation
-    await new Promise((r) => setTimeout(r, 1000));
-    updateStatus("VALIDATED");
+    // Phase 1: Hash integrity confirmed — small delay for visual feedback
+    await new Promise((r) => setTimeout(r, 800));
 
-    // Phase 2: Ledger Sealing
-    await new Promise((r) => setTimeout(r, 1000));
-    updateStatus("SEALED");
+    // Phase 2: Root Neuron Validation — attempt live sovereign_signer call
+    let validationMode: "LIVE" | "FALLBACK" = "FALLBACK";
+    try {
+      const signerActor = getSovereignSignerActor();
+      const result = await signerActor.get_public_key();
+      if ("Ok" in result) {
+        validationMode = "LIVE";
+      }
+    } catch {
+      validationMode = "FALLBACK";
+    }
+    updateStatus("VALIDATED", { validationMode });
 
-    // Phase 3: Autonomous Deploy
-    await new Promise((r) => setTimeout(r, 1000));
-    updateStatus("DEPLOYED");
+    // Phase 3: Ledger Sealing
+    await new Promise((r) => setTimeout(r, 900));
+    updateStatus("SEALED", { validationMode });
+
+    // Phase 4: Autonomous Deploy
+    await new Promise((r) => setTimeout(r, 900));
+    updateStatus("DEPLOYED", { validationMode });
     setIsSimulating(false);
   };
 
@@ -237,6 +254,20 @@ const RootNeuron: React.FC = () => {
                         }}
                       >
                         {entry.status}
+                        {entry.validationMode && entry.status !== "PENDING" && (
+                          <span
+                            style={{
+                              fontSize: "8px",
+                              marginLeft: "4px",
+                              color:
+                                entry.validationMode === "LIVE"
+                                  ? "#34d399"
+                                  : "#fbbf24",
+                            }}
+                          >
+                            [{entry.validationMode}]
+                          </span>
+                        )}
                       </span>
                       <div className="flex gap-1">
                         <div

@@ -1156,6 +1156,19 @@ export const BtmNetworkLayer: React.FC = () => {
         <div className="card-hud p-5 border border-naga-blue/20 bg-black/40 flex flex-col">
           <h3 className="font-orbitron text-naga-blue text-sm tracking-widest mb-4 flex items-center gap-2">
             <Activity size={16} /> COORDINATION EVENT FEED
+            <span
+              style={{
+                fontSize: "8px",
+                color: "#F6B24A",
+                background: "rgba(246,178,74,0.1)",
+                border: "1px solid rgba(246,178,74,0.3)",
+                padding: "1px 6px",
+                borderRadius: "3px",
+                fontFamily: "monospace",
+              }}
+            >
+              [SIMULATION]
+            </span>
           </h3>
           <div
             ref={feedRef}

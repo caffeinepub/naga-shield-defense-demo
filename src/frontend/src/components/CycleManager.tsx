@@ -182,23 +182,16 @@ const CycleManager: React.FC = () => {
         try {
           cycles = await getCycles(canisterId);
         } catch {
+          // Only cycle_airdropper exposes check_cycles; all others return UNKNOWN
+          cycles = 0n;
           error = "no cycles query";
-          // Seed a plausible simulated value so the bar renders meaningfully
-          // for demonstration purposes — clearly labeled as estimated.
-          const seed = canisterId.charCodeAt(0) + canisterId.charCodeAt(4);
-          const base = 1_000_000_000_000n; // 1 TC base
-          cycles = base * BigInt((seed % 8) + 1); // 1–8 TC range
-          error = "estimated";
         }
         return {
           id: canisterId,
           name,
           canisterId,
-          cycles,
-          status:
-            error === "no cycles query"
-              ? ("UNKNOWN" as CycleStatus)
-              : getStatus(cycles),
+          cycles: error ? null : cycles,
+          status: error ? ("UNKNOWN" as CycleStatus) : getStatus(cycles),
           lastChecked: new Date().toLocaleTimeString(),
           error,
         } satisfies CanisterCycleInfo;
@@ -419,8 +412,7 @@ const CycleManager: React.FC = () => {
                 <span
                   className={`font-mono text-xs font-bold ${statusColor(c.status)}`}
                 >
-                  {c.error === "estimated" ? "~" : ""}
-                  {formatCycles(c.cycles)}
+                  {c.status === "UNKNOWN" ? "—" : formatCycles(c.cycles)}
                 </span>
               </div>
 
@@ -446,7 +438,7 @@ const CycleManager: React.FC = () => {
                   </button>
                 ) : c.status === "UNKNOWN" ? (
                   <span className="text-[9px] text-naga-blue/30 font-mono">
-                    no query
+                    No query method exposed
                   </span>
                 ) : (
                   <CheckCircle
@@ -465,7 +457,7 @@ const CycleManager: React.FC = () => {
           <span>LOW &lt; 2 TC</span>
           <span>HEALTHY ≥ 2 TC</span>
           <span>UNKNOWN = no cycles query exposed</span>
-          <span>~ = estimated (no check_cycles method)</span>
+          <span>Only cycle_airdropper exposes check_cycles (live)</span>
         </div>
       </div>
 

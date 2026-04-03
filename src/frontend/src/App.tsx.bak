@@ -17,7 +17,6 @@ import BtmNetworkLayer from "./components/BtmNetworkLayer";
 import { CanisterGrid } from "./components/CanisterGrid";
 import CycleManager from "./components/CycleManager";
 import { DefenseScore } from "./components/DefenseScore";
-import { GenesisMission } from "./components/GenesisMission";
 import { HoneypotVisualizer } from "./components/HoneypotVisualizer";
 import { NagaTopology } from "./components/NagaTopology";
 import { RawTelemetry } from "./components/RawTelemetry";
@@ -569,39 +568,21 @@ export default function App() {
   ];
 
   const sidebarIcons = [
-    { icon: <Shield size={18} />, label: "Overview", tab: "OVERVIEW" as Tab },
+    { icon: <Shield size={18} />, label: "Shield", tab: "OVERVIEW" as Tab },
     { icon: <Cpu size={18} />, label: "Canisters", tab: "CANISTERS" as Tab },
     {
       icon: <AlertTriangle size={18} />,
       label: "Honeypot",
       tab: "HONEYPOT" as Tab,
     },
-    { icon: <Eye size={18} />, label: "Threat Log", tab: "THREAT LOG" as Tab },
+    { icon: <Eye size={18} />, label: "Threats", tab: "THREAT LOG" as Tab },
     {
       icon: <Radio size={18} />,
-      label: "POC Overview",
+      label: "POC",
       tab: "POC OVERVIEW" as Tab,
     },
-    {
-      icon: <Zap size={18} />,
-      label: "Remediation Gateway",
-      tab: "REMEDIATION GATEWAY" as Tab,
-    },
-    {
-      icon: <Activity size={18} />,
-      label: "Cycles",
-      tab: "CYCLES" as Tab,
-    },
-    {
-      icon: <Lock size={18} />,
-      label: "BTM Coordination",
-      tab: "BTM COORDINATION" as Tab,
-    },
-    {
-      icon: <Menu size={18} />,
-      label: "Raw Telemetry",
-      tab: "RAW TELEMETRY" as Tab,
-    },
+    { icon: <Lock size={18} />, label: "Vault", tab: "OVERVIEW" as Tab },
+    { icon: <Activity size={18} />, label: "Score", tab: "OVERVIEW" as Tab },
   ];
 
   return (
@@ -646,13 +627,13 @@ export default function App() {
                 lineHeight: 1,
               }}
             >
-              SROS
+              NAGA SHIELD
             </div>
             <div
               className="text-naga-muted"
               style={{ fontSize: "8px", letterSpacing: "0.15em" }}
             >
-              SOVEREIGN RESONANT OPERATING SYSTEM · ICP MAINNET
+              LAYER 2 SECURITY DEFENSE SYSTEM
             </div>
           </div>
         </div>
@@ -921,18 +902,6 @@ export default function App() {
                           >
                             {kpi.value}
                           </div>
-                          {(kpi.id === "kpi_integrity" ||
-                            kpi.id === "kpi_threats") && (
-                            <span
-                              style={{
-                                fontSize: "8px",
-                                color: "#F6B24A",
-                                fontFamily: "monospace",
-                              }}
-                            >
-                              PHASE 1 · CONCEPTUAL
-                            </span>
-                          )}
                           <div
                             className="mt-1"
                             style={{
@@ -1352,30 +1321,18 @@ export default function App() {
                     className="font-orbitron font-bold text-naga-cyan"
                     style={{ fontSize: "16px", letterSpacing: "0.1em" }}
                   >
-                    SROS — SOVEREIGN COORDINATION MESH · PROOF OF CONCEPT
+                    PROOF OF CONCEPT — LAYER 2 SECURITY FRAMEWORK
                   </h2>
                   <p
                     className="text-naga-muted mt-0.5"
                     style={{ fontSize: "11px" }}
                   >
-                    ICP Mainnet · 17-Node Autonomous Canister Suite · DOE Phase
-                    1 Submission
+                    ICP Layer 2 Enforcement — Proof of Concept Submission
                   </p>
                 </div>
 
                 {/* NAGA SHIELD TELEMETRY in POC Overview */}
                 <NagaShieldPanel telemetry={liveData.nagaShieldTelemetry} />
-
-                <GenesisMission
-                  sovereignMetrics={liveData.sovereignMetrics}
-                  isControllerAuthenticated={
-                    liveData.sovereignSignerKey !== null &&
-                    "Ok" in (liveData.sovereignSignerKey as { Ok?: unknown }) &&
-                    Array.isArray(
-                      (liveData.sovereignSignerKey as { Ok?: unknown }).Ok,
-                    )
-                  }
-                />
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <VaultIntegrity
@@ -1610,7 +1567,7 @@ export default function App() {
               className="font-orbitron text-naga-muted mb-1"
               style={{ fontSize: "9px", letterSpacing: "0.12em" }}
             >
-              DISPATCH LATENCY
+              NAGA RESPONSE
             </div>
             <div
               className="font-orbitron font-bold text-naga-blue"
@@ -1618,15 +1575,6 @@ export default function App() {
             >
               {sim.nakaResponseTime.toFixed(1)}ms
             </div>
-            <span
-              style={{
-                fontSize: "8px",
-                color: "#4A5568",
-                fontFamily: "monospace",
-              }}
-            >
-              [SIM]
-            </span>
           </div>
 
           {/* Live IC data summary in sidebar */}

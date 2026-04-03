@@ -1,36 +1,53 @@
-# SROS BTM Network — Synthetic Trigger Panel
+# SROS — Sovereign Resonant Operating System
 
 ## Current State
-BtmNetworkLayer.tsx has a Pre-Approved Action Registry with a TRIGGER button that runs a frontend-only simulation (client-side state transitions: SEALED → TRIGGERED → VALIDATING → DEPLOYED). The sovereign_signer call during VALIDATING is a fire-and-forget fetch that doesn't surface a real response.
 
-The canisters.ts file has verified IDL factories and actor helpers for all 17 live canisters. `sovereign_signer` exposes `get_public_key()` as a live query.
+The app is a 9-tab dashboard (`OVERVIEW`, `CANISTERS`, `HONEYPOT`, `THREAT LOG`, `POC OVERVIEW`, `REMEDIATION GATEWAY`, `CYCLES`, `BTM COORDINATION`, `RAW TELEMETRY`) showing live ICP mainnet telemetry from a 17-node Rust canister mesh. A full audit identified the following issues before DOE submission:
+
+1. **PDF export broken** — `GenesisMission.tsx` is imported but never rendered anywhere. The `[ EXPORT PDF ]` button inside it is unreachable.
+2. **Sidebar only covers 5 of 9 tabs** — `REMEDIATION GATEWAY`, `CYCLES`, `BTM COORDINATION`, `RAW TELEMETRY` have no sidebar icon shortcuts on mobile/desktop sidebar.
+3. **`SYSTEM INTEGRITY` misleading** — hardcoded 100% from simulation hook, displayed as if it's a live KPI with no label.
+4. **`ACTIVE THREATS` misleading** — driven by random JavaScript timer, no real canister feed, displayed as a top-level real-time KPI.
+5. **Cycle values are seeded estimates** — all canisters except `cycle_airdropper` fail `check_cycles()` and receive a character-code seeded estimate (1–8 TC). The `~` prefix is subtle; estimates should be clearly labeled or shown as UNKNOWN.
+6. **`NAGA RESPONSE` label** — still uses symbolic product name in right sidebar; should use scientific equivalent.
+7. **RootNeuron deploy pipeline** — `simulateDeployment()` uses only `setTimeout`, no live canister call. Should call `sovereign_signer.get_public_key()` as the root neuron gate step (same as `CycleManager` already does).
+8. **BTM Coordination Feed** — auto-fires from hardcoded templates every 15s, no `[SIMULATION]` label on the feed itself.
+9. **App title** — still "NAGA SHIELD" in header. Needs to be renamed to scientific/DOE-appropriate name.
 
 ## Requested Changes (Diff)
 
 ### Add
-- **Synthetic Trigger Panel** — new section in BtmNetworkLayer.tsx, placed ABOVE the Pre-Approved Action Registry
-- **Condition Selector** — dropdown with 5 options: PEAK_DEMAND, FREQUENCY_DEVIATION, BROWNOUT, PRICE_SPIKE, DEMAND_RESPONSE
-- **[INJECT CONDITION] button** — calls `naga_shield.force_condition(condition)` if the method exists; falls back gracefully if not yet deployed (canister doesn't have the method yet)
-- **3-Step Live Verification Checklist** — renders live as each step clears:
-  1. DETECTION — threshold recognized (polls `naga_shield.get_status()` — already deployed)
-  2. INTEGRITY CHECK — hash fetched and compared (calls `sovereign_signer.get_public_key()` live on-chain — already deployed)
-  3. UNSEAL EVENT — registry transitions SEALED → ACTIVE (triggers the matching condition row in the registry below)
-- **Per-step timestamps** — each step shows exact time it cleared, and which canister responded
-- **Live on-chain response display** — step 2 shows the actual hex key returned from sovereign_signer (truncated)
-- **Graceful fallback** — if `force_condition` method isn't deployed yet, steps 1 and 3 simulate while step 2 makes a real on-chain call to sovereign_signer
-- **"PHASE 1 CONCEPTUAL" label** — clearly labels the synthetic trigger as a test harness for DOE reviewers
+- Import and render `<GenesisMission>` in the `POC OVERVIEW` tab, passing `sovereignMetrics` from `liveData.sovereignCoreMetrics` and `isControllerAuthenticated` from `liveData.isControllerAuthenticated`.
+- Sidebar icon entries for all 4 missing tabs: `REMEDIATION GATEWAY` (use `FlaskConical` or `Activity` icon), `CYCLES` (use `BatteryMedium`), `BTM COORDINATION` (use `Network`), `RAW TELEMETRY` (use `Terminal`).
+- `[PHASE 1 CONCEPTUAL]` amber badge label next to `SYSTEM INTEGRITY` KPI card value.
+- `[PHASE 1 CONCEPTUAL]` amber badge label next to `ACTIVE THREATS` KPI card value.
+- `[SIMULATION]` small amber tag on the BTM Coordination Event Feed header in `BtmNetworkLayer.tsx`.
+- Add a live `sovereign_signer.get_public_key()` call as Step 2 (Integrity Gate) in `RootNeuron.tsx` `simulateDeployment()` — same pattern as `CycleManager.tsx` `triggerTopUp()`. Show canister ID, result, and fallback if unreachable.
 
 ### Modify
-- **triggerCondition function** — wire step 2 to actually call `getSovereignSignerActor().get_public_key()` and display the real response
-- **Registry TRIGGER button** — when Synthetic Trigger fires a condition, it also auto-triggers the matching registry row to show the full pipeline
+- **App header title**: Change `NAGA SHIELD` → `SROS` and subtitle `LAYER 2 SECURITY DEFENSE SYSTEM` → `SOVEREIGN RESONANT OPERATING SYSTEM · ICP MAINNET`.
+- **Right sidebar `NAGA RESPONSE` label**: Change to `DISPATCH LATENCY` with a `[SIM]` suffix tag in small muted text (value is simulated).
+- **CycleManager**: Canisters that cannot be queried (error !== 'estimated from cycle_airdropper') should show status `UNKNOWN` with label `NO QUERY METHOD` instead of fabricated HEALTHY/LOW/CRITICAL from seeded values. Only `cycle_airdropper` should show a real bar; others should show gray `UNKNOWN` bars clearly labeled.
+- **`POC OVERVIEW` tab header text**: Update from `PROOF OF CONCEPT — LAYER 2 SECURITY FRAMEWORK` to `SROS — SOVEREIGN COORDINATION MESH · PROOF OF CONCEPT` and subtitle to `ICP Mainnet · 17-Node Autonomous Canister Suite · DOE Phase 1 Submission`.
 
 ### Remove
-- Nothing removed
+- Nothing to remove — all existing components stay. Only labels and wiring change.
 
 ## Implementation Plan
-1. Add `SyntheticTriggerPanel` component inline in BtmNetworkLayer.tsx
-2. State: `selectedCondition`, `isInjecting`, `checklistSteps` array (3 steps, each with status/timestamp/canisterResponse)
-3. On INJECT: run 3 steps sequentially — step 1 calls naga_shield.get_status() live, step 2 calls sovereign_signer.get_public_key() live and shows raw response, step 3 auto-fires matching registry row
-4. Show real on-chain response from sovereign_signer in step 2 (hex-encoded public key truncated to 24 chars)
-5. Hash map: condition string → registry ID + expected hash (matches INITIAL_CONDITIONS)
-6. Wire into BtmNetworkLayer — expose `triggerCondition` via useRef/callback so SyntheticPanel can call it
+
+1. **App.tsx**
+   - Change header title strings
+   - Change `NAGA RESPONSE` → `DISPATCH LATENCY [SIM]` in right sidebar
+   - Expand `sidebarIcons` array to include all 9 tabs with appropriate Lucide icons (import `BatteryMedium`, `Network`, `Terminal`, `FlaskConical` or similar)
+   - Add `[PHASE 1 CONCEPTUAL]` amber inline badge to SYSTEM INTEGRITY and ACTIVE THREATS KPI cards
+   - Import `GenesisMission` and render it in `POC OVERVIEW` tab block, above or replacing the existing VaultIntegrity/DefenseScore grid
+   - Update POC OVERVIEW tab header text
+
+2. **RootNeuron.tsx**
+   - In `simulateDeployment()`, add a real `sovereign_signer.get_public_key()` call using the same agent pattern from `canisters.ts`. If it resolves with Ok, show CONFIRMED [LIVE]; if it fails, show CONFIRMED [FALLBACK]. This replaces the first pure `setTimeout` step.
+
+3. **CycleManager.tsx**
+   - Change the seed/estimate fallback logic: instead of setting `error = 'estimated'` and assigning a fake TC value, set `status = 'UNKNOWN'` and `error = 'no query method'`. Remove the seeded cycles calculation. Show these canisters with a gray bar labeled `UNKNOWN — NO QUERY METHOD` instead of a colored health bar.
+
+4. **BtmNetworkLayer.tsx**
+   - Add a small `[SIMULATION]` amber badge to the Coordination Event Feed panel header.
