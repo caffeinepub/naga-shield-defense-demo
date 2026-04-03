@@ -87,16 +87,21 @@ const nagaExecutionIDL: IDL.InterfaceFactory = ({ IDL: I }) =>
 
 // naga_shield — VERIFIED (candid:service confirmed April 2026)
 // get_status() -> ShieldStatus  [query]
+// get_current_status() -> text  [query — returns e.g. "NORMAL" or "BROWNOUT"]
 // validate_handshake(text) -> bool  [update — LIVE FIRE TEST]
+// force_condition(text) -> variant { ok: text; err: text }  [update — SYNTHETIC TRIGGER]
 const nagaShieldIDL: IDL.InterfaceFactory = ({ IDL: I }) => {
   const ShieldStatus = I.Record({
     mesh_integrity: I.Text,
     active_traps: I.Nat64,
     neutralized_threats: I.Nat64,
   });
+  const ForceResult = I.Variant({ ok: I.Text, err: I.Text });
   return I.Service({
     get_status: I.Func([], [ShieldStatus], ["query"]),
+    get_current_status: I.Func([], [I.Text], ["query"]),
     validate_handshake: I.Func([I.Text], [I.Bool], []),
+    force_condition: I.Func([I.Text], [ForceResult], []),
   });
 };
 
@@ -215,7 +220,11 @@ export interface NagaShieldStatus {
 
 export interface NagaShieldActor {
   get_status: () => Promise<NagaShieldStatus>;
+  get_current_status: () => Promise<string>;
   validate_handshake: (payload: string) => Promise<boolean>;
+  force_condition: (
+    condition: string,
+  ) => Promise<{ ok: string } | { err: string }>;
 }
 
 export interface SealCanisterActor {
