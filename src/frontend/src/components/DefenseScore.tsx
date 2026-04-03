@@ -38,7 +38,7 @@ export function DefenseScore({
 
   const metrics = [
     {
-      label: "CYCLE BURN DELTA",
+      label: "RESOURCE CONSUMPTION DELTA",
       value: formatCycles(cycleBurnDelta),
       color: "#F6B24A",
       note: "LIVE",
@@ -50,13 +50,13 @@ export function DefenseScore({
       note: null,
     },
     {
-      label: "MESH RESONANCE",
+      label: "CONSENSUS INDEX",
       value: `${displayScore}%`,
       color: scoreColor,
       note: "LIVE",
     },
     {
-      label: "NAGA RESPONSE",
+      label: "ENFORCEMENT LATENCY",
       value: `${nakaResponseTime.toFixed(1)}ms`,
       color: "#3AA7FF",
       note: null,
@@ -73,7 +73,7 @@ export function DefenseScore({
           className="font-orbitron text-naga-muted uppercase"
           style={{ fontSize: "11px", letterSpacing: "0.15em" }}
         >
-          DEFENSE STRENGTH SCORE
+          NETWORK RESILIENCE INDEX
         </span>
         <span
           style={{
@@ -173,7 +173,7 @@ export function DefenseScore({
                 letterSpacing: "0.08em",
               }}
             >
-              MESH RESONANCE
+              CONSENSUS HEALTH
             </div>
           </div>
         </div>
@@ -215,7 +215,9 @@ export function DefenseScore({
                   className="h-full rounded-full"
                   style={{
                     width:
-                      m.label === "MESH RESONANCE" ? `${displayScore}%` : "70%",
+                      m.label === "CONSENSUS INDEX"
+                        ? `${displayScore}%`
+                        : "70%",
                     background: m.color,
                     opacity: 0.5,
                     transition: "width 0.5s ease",

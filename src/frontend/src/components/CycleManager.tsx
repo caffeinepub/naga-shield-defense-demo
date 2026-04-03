@@ -304,7 +304,7 @@ const CycleManager: React.FC = () => {
   const phaseLabel: Record<TopUpPhase, string> = {
     IDLE: "IDLE",
     HASHING: "HASHING PAYLOAD",
-    VALIDATING: "ROOT NEURON VALIDATING",
+    VALIDATING: "CRYPTOGRAPHIC GATEWAY VALIDATION",
     SEALING: "SEALING LEDGER",
     DISPATCHING: "DISPATCHING TOP-UP",
     COMPLETE: "DEPLOYED ✓",
@@ -369,7 +369,7 @@ const CycleManager: React.FC = () => {
       <div className="card-hud p-6 border border-naga-blue/30 bg-black/40 backdrop-blur-md">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-orbitron text-naga-blue flex items-center gap-2">
-            <Activity size={20} /> CYCLE MONITOR
+            <Activity size={20} /> COMPUTE RESOURCE MONITOR
           </h3>
           <div className="flex items-center gap-3">
             <span className="text-[10px] text-naga-blue/40 font-mono">
@@ -472,13 +472,13 @@ const CycleManager: React.FC = () => {
       {/* ── Root Neuron Top-Up Log ── */}
       <div className="card-hud p-6 border border-teal-500/30 bg-black/40 backdrop-blur-md">
         <h3 className="text-xl font-orbitron text-teal-400 mb-1 flex items-center gap-2">
-          <Shield size={20} /> ROOT NEURON TOP-UP PIPELINE
+          <Shield size={20} /> THRESHOLD-TRIGGERED RESOURCE ALLOCATION PIPELINE
         </h3>
         <p className="text-[10px] text-naga-blue/40 mb-4 font-mono">
           When a canister falls below threshold, clicking TOP-UP hashes the
-          dispatch payload, validates through sovereign_signer (live on-chain),
-          seals to the secondary ledger, and dispatches via cycle_airdropper
-          autonomously.
+          dispatch payload, validates through cryptographic authorization node
+          (sovereign_signer, live on-chain), seals to the secondary ledger, and
+          dispatches via cycle_airdropper autonomously.
         </p>
 
         {topUpJobs.length === 0 ? (
@@ -607,7 +607,7 @@ const CycleManager: React.FC = () => {
       {/* ── Auto-Top-Up Rule Info ── */}
       <div className="card-hud p-5 border border-naga-blue/15 bg-black/20">
         <h4 className="text-xs font-orbitron text-naga-blue/60 mb-3 flex items-center gap-2">
-          <AlertTriangle size={13} /> AUTONOMOUS TOP-UP PROTOCOL
+          <AlertTriangle size={13} /> AUTONOMOUS RESOURCE ALLOCATION PROTOCOL
         </h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-[10px] font-mono text-naga-blue/50">
           <div className="space-y-1">
@@ -621,11 +621,11 @@ const CycleManager: React.FC = () => {
           </div>
           <div className="space-y-1">
             <div className="text-naga-blue/70 font-semibold uppercase tracking-wider">
-              Root Neuron Gate
+              Cryptographic Authorization Gate
             </div>
-            <div>sovereign_signer validates dispatch hash</div>
+            <div>Cryptographic authorization node validates dispatch hash</div>
             <div className="text-teal-400/60">
-              No unsigned top-up ever executes
+              No unauthorized allocation ever executes
             </div>
           </div>
           <div className="space-y-1">
@@ -640,10 +640,11 @@ const CycleManager: React.FC = () => {
         </div>
       </div>
 
-      {/* ── Sovereign Resonant Mesh: Autonomous Top-Up Flow Diagram ── */}
+      {/* ── Distributed Node Mesh: Autonomous Resource Allocation Flow Diagram ── */}
       <div className="card-hud p-6 border border-cyan-500/25 bg-black/30 backdrop-blur-md">
         <h4 className="text-sm font-orbitron text-cyan-400 mb-5 flex items-center gap-2 uppercase tracking-widest">
-          <Zap size={14} /> Sovereign Resonant Mesh — Autonomous Top-Up Flow
+          <Zap size={14} /> Distributed Node Mesh — Autonomous Resource
+          Allocation Flow
         </h4>
 
         {/* SVG Flow Diagram */}
@@ -652,10 +653,10 @@ const CycleManager: React.FC = () => {
             viewBox="0 0 900 420"
             className="w-full max-w-4xl mx-auto"
             style={{ minWidth: 600 }}
-            aria-label="Sovereign Resonant Mesh Autonomous Top-Up Flow Diagram"
+            aria-label="Distributed Node Mesh Autonomous Resource Allocation Flow Diagram"
           >
             <title>
-              Sovereign Resonant Mesh Autonomous Top-Up Flow Diagram
+              Distributed Node Mesh Autonomous Resource Allocation Flow Diagram
             </title>
             {/* Background grid lines */}
             <defs>
@@ -885,7 +886,7 @@ const CycleManager: React.FC = () => {
               fontFamily="Orbitron, monospace"
               letterSpacing="3"
             >
-              SOVEREIGN RESONANT MESH
+              DISTRIBUTED NODE MESH
             </text>
 
             {/* ── Sovereign Signer Node ── */}
@@ -928,7 +929,7 @@ const CycleManager: React.FC = () => {
               fontSize="7"
               fontFamily="monospace"
             >
-              Root Neuron Gate
+              Cryptographic Auth Gate
             </text>
 
             {/* ── Temporal Shadow Node ── */}
@@ -1307,7 +1308,7 @@ const CycleManager: React.FC = () => {
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-sm bg-red-900 border border-red-500" />
-            <span>Root Neuron Gate (sovereign_signer)</span>
+            <span>Cryptographic Auth Gate (sovereign_signer)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-sm bg-green-900 border border-green-500" />

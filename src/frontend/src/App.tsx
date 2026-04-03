@@ -33,9 +33,9 @@ type Tab =
   | "HONEYPOT"
   | "THREAT LOG"
   | "POC OVERVIEW"
-  | "ROOT NEURON"
+  | "REMEDIATION GATEWAY"
   | "CYCLES"
-  | "BTM NETWORK"
+  | "BTM COORDINATION"
   | "RAW TELEMETRY";
 
 function formatCyclesShort(n: number) {
@@ -195,7 +195,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
                 color: "#E6EEF7",
               }}
             >
-              NAGA SHIELD — LIVE L2 ENFORCEMENT
+              PAYLOAD INTEGRITY ENFORCEMENT — LIVE LAYER 2
             </div>
             <div
               style={{
@@ -365,7 +365,7 @@ function LiveFireTest({ compact }: { compact?: boolean }) {
 
   const stateConfig = {
     idle: {
-      label: "LIVE FIRE TEST",
+      label: "LIVE VALIDATION TEST",
       color: "#F6B24A",
       bg: "rgba(246,178,74,0.08)",
       border: "rgba(246,178,74,0.3)",
@@ -379,14 +379,14 @@ function LiveFireTest({ compact }: { compact?: boolean }) {
       pulse: true,
     },
     accepted: {
-      label: "HANDSHAKE ACCEPTED — SHIELD ACTIVE",
+      label: "HANDSHAKE ACCEPTED — ENFORCEMENT ACTIVE",
       color: "#28E7B7",
       bg: "rgba(40,231,183,0.08)",
       border: "rgba(40,231,183,0.3)",
       pulse: false,
     },
     rejected: {
-      label: "HANDSHAKE REJECTED — INTERCEPT TRIGGERED",
+      label: "HANDSHAKE REJECTED — ENFORCEMENT TRIGGERED",
       color: "#FF4B5C",
       bg: "rgba(255,75,92,0.08)",
       border: "rgba(255,75,92,0.3)",
@@ -420,7 +420,7 @@ function LiveFireTest({ compact }: { compact?: boolean }) {
               marginBottom: "3px",
             }}
           >
-            DRE PROOF — ON-CHAIN HANDSHAKE VALIDATION
+            ON-CHAIN ENFORCEMENT PROOF — HANDSHAKE VALIDATION
           </div>
           <div
             style={{
@@ -514,9 +514,9 @@ export default function App() {
     "HONEYPOT",
     "THREAT LOG",
     "POC OVERVIEW",
-    "ROOT NEURON",
+    "REMEDIATION GATEWAY",
     "CYCLES",
-    "BTM NETWORK",
+    "BTM COORDINATION",
     "RAW TELEMETRY",
   ];
 
@@ -546,21 +546,21 @@ export default function App() {
     },
     {
       id: "kpi_cycles",
-      label: "CYCLES DRAINED",
+      label: "COMPUTE RESOURCE DELTA",
       value:
         liveData.cycleBurnDelta > 0
           ? formatCyclesShort(liveData.cycleBurnDelta)
           : "ACCUMULATING",
-      sub: "LIVE CYCLE BURN DELTA",
+      sub: "INTER-POLL CYCLE CONSUMPTION",
       color: "#F6B24A",
       bgClass: "card-hud-amber",
       icon: <Zap size={16} style={{ color: "#F6B24A" }} />,
     },
     {
       id: "kpi_score",
-      label: "MESH RESONANCE",
+      label: "CONSENSUS INDEX",
       value: `${liveData.meshResonanceScore}%`,
-      sub: "LIVE CANISTER FULFILLMENT",
+      sub: "LIVE NODE FULFILLMENT RATIO",
       color: "#29D6FF",
       bgClass: "card-hud-blue",
       icon: <Activity size={16} style={{ color: "#29D6FF" }} />,
@@ -944,7 +944,7 @@ export default function App() {
                       className="font-orbitron text-naga-cyan mb-3"
                       style={{ fontSize: "10px", letterSpacing: "0.15em" }}
                     >
-                      MESH INTEGRITY FEED — LIVE ENFORCEMENT TELEMETRY
+                      DISTRIBUTED ENFORCEMENT TELEMETRY — LIVE ON-CHAIN
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                       {/* DRE Trap Status */}
@@ -1051,7 +1051,7 @@ export default function App() {
                                   letterSpacing: "0.1em",
                                 }}
                               >
-                                L2 ENFORCEMENT LAYER
+                                LAYER 2 PROTOCOL MESH
                               </div>
                               <div className="flex items-center gap-1.5 mb-1">
                                 <div
@@ -1101,7 +1101,7 @@ export default function App() {
                             className="font-orbitron text-naga-muted mb-1"
                             style={{ fontSize: "8px", letterSpacing: "0.1em" }}
                           >
-                            AI DEFENSE CORE
+                            ADAPTIVE OPTIMIZATION ENGINE
                           </div>
                           <div className="flex items-center gap-1.5 mb-1">
                             <div
@@ -1173,13 +1173,13 @@ export default function App() {
                       className="font-orbitron font-bold text-naga-cyan"
                       style={{ fontSize: "16px", letterSpacing: "0.1em" }}
                     >
-                      LIVE DEFENSE MONITOR
+                      LIVE NODE STATUS MONITOR
                     </h2>
                     <p
                       className="text-naga-muted mt-0.5"
                       style={{ fontSize: "11px" }}
                     >
-                      18 Protected Canisters — Real-time Status
+                      18 Monitored Canisters — Real-time Status
                     </p>
                   </div>
                   <div
@@ -1214,13 +1214,14 @@ export default function App() {
                       className="font-orbitron font-bold text-naga-amber"
                       style={{ fontSize: "16px", letterSpacing: "0.1em" }}
                     >
-                      HONEYPOT / ROSE GAS MODEL
+                      DECEPTION LAYER / ATTACKER RESOURCE DRAIN
                     </h2>
                     <p
                       className="text-naga-muted mt-0.5"
                       style={{ fontSize: "11px" }}
                     >
-                      Attacker cycle drain engine — live simulation
+                      Threshold-triggered resource exhaustion model — Phase 1
+                      Conceptual Demonstration
                     </p>
                   </div>
                 </div>
@@ -1320,7 +1321,7 @@ export default function App() {
                     className="font-orbitron font-bold text-naga-cyan"
                     style={{ fontSize: "16px", letterSpacing: "0.1em" }}
                   >
-                    POC OVERVIEW — SECURITY FRAMEWORK
+                    PROOF OF CONCEPT — LAYER 2 SECURITY FRAMEWORK
                   </h2>
                   <p
                     className="text-naga-muted mt-0.5"
@@ -1349,7 +1350,7 @@ export default function App() {
             )}
 
             {/* ROOT NEURON */}
-            {activeTab === "ROOT NEURON" && (
+            {activeTab === "REMEDIATION GATEWAY" && (
               <div className="space-y-4">
                 <RootNeuron />
               </div>
@@ -1363,7 +1364,7 @@ export default function App() {
             )}
 
             {/* BTM NETWORK */}
-            {activeTab === "BTM NETWORK" && (
+            {activeTab === "BTM COORDINATION" && (
               <div className="space-y-4">
                 <BtmNetworkLayer />
               </div>
@@ -1414,7 +1415,7 @@ export default function App() {
                 className="font-orbitron text-naga-muted"
                 style={{ letterSpacing: "0.12em" }}
               >
-                NAGA SHIELD v2.4.1 — ALL SYSTEMS OPERATIONAL
+                SROS v2.4.1 — ALL NODES OPERATIONAL
               </span>
             </div>
             <div className="flex items-center gap-2 text-naga-muted">

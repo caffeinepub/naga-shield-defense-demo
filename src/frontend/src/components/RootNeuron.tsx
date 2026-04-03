@@ -98,7 +98,7 @@ const RootNeuron: React.FC = () => {
         className="card-hud p-6 border border-naga-blue/30 bg-black/40 backdrop-blur-md"
       >
         <h3 className="text-xl font-orbitron text-naga-blue mb-1 flex items-center gap-2">
-          <Shield size={20} /> HASH SIMULATOR
+          <Shield size={20} /> SHA-256 PAYLOAD INTEGRITY SIMULATOR
         </h3>
         <p className="text-[10px] text-naga-muted mb-4">
           Load a failure scenario above, or paste your own fix payload. Compute
@@ -109,7 +109,7 @@ const RootNeuron: React.FC = () => {
           <div className="space-y-3">
             <input
               type="text"
-              placeholder="Problem Signature (e.g., REENTRANCY_V1)"
+              placeholder="Problem Identifier (e.g., REENTRANCY_V1)"
               className="w-full bg-black/60 border border-naga-blue/20 p-2 text-sm text-teal-400 font-mono rounded"
               value={problemLabel}
               onChange={(e) => {
@@ -159,7 +159,7 @@ const RootNeuron: React.FC = () => {
               <div className="mt-4 w-full">
                 {!problemLabel && (
                   <p className="text-[10px] text-yellow-400/80 text-center mb-2">
-                    Fill in a Problem Signature above to enable commit.
+                    Fill in a Problem Identifier above to enable registration.
                   </p>
                 )}
                 <button
@@ -188,7 +188,9 @@ const RootNeuron: React.FC = () => {
                     cursor: canCommit ? "pointer" : "not-allowed",
                   }}
                 >
-                  {committed ? "✓ COMMITTED" : "COMMIT TO SECONDARY LEDGER"}
+                  {committed
+                    ? "✓ REGISTERED"
+                    : "REGISTER TO REMEDIATION LEDGER"}
                 </button>
               </div>
             )}
@@ -199,16 +201,16 @@ const RootNeuron: React.FC = () => {
       {/* Secondary Ledger Section */}
       <div className="card-hud p-6 border border-teal-500/30 bg-black/40">
         <h3 className="text-xl font-orbitron text-teal-400 mb-4 flex items-center gap-2">
-          <Database size={20} /> SECONDARY LEDGER{" "}
+          <Database size={20} /> REMEDIATION AUDIT LEDGER{" "}
           <span className="text-xs text-teal-400/50 ml-1">(SESSION)</span>
         </h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-[11px] font-mono">
             <thead className="text-naga-blue/60 uppercase border-b border-naga-blue/20">
               <tr>
-                <th className="pb-2 pr-4">Signature</th>
-                <th className="pb-2 pr-4">Solution Hash</th>
-                <th className="pb-2 pr-4">Pipeline Status</th>
+                <th className="pb-2 pr-4">Problem Identifier</th>
+                <th className="pb-2 pr-4">Payload Hash (SHA-256)</th>
+                <th className="pb-2 pr-4">Validation Pipeline</th>
                 <th className="pb-2">Action</th>
               </tr>
             </thead>
@@ -272,7 +274,7 @@ const RootNeuron: React.FC = () => {
                         onClick={() => simulateDeployment(entry.id)}
                         className="flex items-center gap-1 text-blue-400 hover:text-blue-200 transition-colors font-orbitron text-[10px]"
                       >
-                        <Zap size={13} /> DEPLOY
+                        <Zap size={13} /> INITIATE PIPELINE
                       </button>
                     )}
                   </td>
@@ -282,7 +284,7 @@ const RootNeuron: React.FC = () => {
           </table>
           {ledger.length === 0 && (
             <div className="text-center py-10 text-naga-blue/40 italic text-xs">
-              No entries committed to neuron memory.
+              No entries registered to the remediation ledger.
             </div>
           )}
         </div>

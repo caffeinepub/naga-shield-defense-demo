@@ -127,12 +127,12 @@ export function VaultIntegrity({
           className="font-orbitron font-bold text-naga-green"
           style={{ fontSize: "13px", letterSpacing: "0.1em" }}
         >
-          SOVEREIGN CORE ASSETS
+          PROTECTED ASSET REGISTRY
         </div>
         <div className="text-naga-muted mt-1" style={{ fontSize: "9px" }}>
           {isIntact
-            ? "VAULT SEALED — INTEGRITY 100%"
-            : "⚠ BREACH DETECTED — INTEGRITY COMPROMISED"}
+            ? "REGISTRY SEALED — INTEGRITY 100%"
+            : "⚠ ANOMALY DETECTED — INTEGRITY DEGRADED"}
         </div>
       </div>
 
@@ -150,7 +150,7 @@ export function VaultIntegrity({
           className="font-orbitron font-bold"
           style={{ fontSize: "11px", color: arcColor, letterSpacing: "0.15em" }}
         >
-          {isIntact ? "UNTOUCHED" : "COMPROMISED"}
+          {isIntact ? "NOMINAL" : "DEGRADED"}
         </span>
       </div>
 

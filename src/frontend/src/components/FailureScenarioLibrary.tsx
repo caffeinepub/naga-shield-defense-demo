@@ -134,7 +134,7 @@ export const FailureScenarioLibrary: React.FC<Props> = ({ onLoad }) => {
         <div className="flex items-center gap-2">
           <AlertTriangle size={18} className="text-red-400" />
           <span className="font-orbitron text-sm text-red-400 tracking-widest">
-            FAILURE SCENARIO LIBRARY
+            AUTONOMOUS REMEDIATION SCENARIO LIBRARY
           </span>
           <span
             className="text-[10px] font-orbitron px-2 py-0.5 rounded"
@@ -237,7 +237,7 @@ export const FailureScenarioLibrary: React.FC<Props> = ({ onLoad }) => {
                           color: "#29D6FF",
                         }}
                       >
-                        <Zap size={12} /> LOAD INTO HASH SIMULATOR
+                        <Zap size={12} /> LOAD INTO INTEGRITY SIMULATOR
                       </button>
                     </div>
                   )}
