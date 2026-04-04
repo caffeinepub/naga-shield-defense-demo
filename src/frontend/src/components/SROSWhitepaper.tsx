@@ -331,7 +331,7 @@ export function SROSWhitepaper() {
       {/* PRINT TARGET — everything below renders in the PDF            */}
       {/* ═══════════════════════════════════════════════════════════════ */}
       <div
-        className="print-target"
+        className="print-target whitepaper-print"
         style={{
           background: "#060D14",
           color: "#E6EEF7",

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap");
 
 @tailwind base;
@@ -537,4 +538,36 @@
     page-break-inside: avoid;
     break-inside: avoid;
   }
+}
+
+/* ===== Whitepaper print-safe styles ===== */
+@media print {
+  .whitepaper-print {
+    background: white !important;
+    color: #111 !important;
+  }
+  .whitepaper-print * {
+    color: #111 !important;
+    background: transparent !important;
+    border-color: #ccc !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+  .whitepaper-print h1,
+  .whitepaper-print h2,
+  .whitepaper-print h3 {
+    color: #003366 !important;
+  }
+  .whitepaper-print .no-print {
+    display: none !important;
+  }
+}
+
+/* ===== Scrollbar hide utility ===== */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

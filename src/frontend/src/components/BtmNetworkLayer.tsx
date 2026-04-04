@@ -607,7 +607,7 @@ const SyntheticTriggerPanel: React.FC<SyntheticTriggerPanelProps> = ({
             <div className="text-[9px] text-naga-muted uppercase tracking-widest mb-1">
               Registry Target
             </div>
-            <div className="font-orbitron text-[11px] text-naga-cyan">
+            <div className="font-mono text-[11px] text-naga-cyan">
               {CONDITION_TO_REGISTRY_ID[selectedCondition]}
             </div>
             <div className="text-[9px] text-naga-muted mt-0.5">

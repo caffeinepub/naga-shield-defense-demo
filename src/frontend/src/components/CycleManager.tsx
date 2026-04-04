@@ -76,11 +76,11 @@ function getStatus(cycles: bigint | null, error?: string): CycleStatus {
 function statusColor(status: CycleStatus): string {
   switch (status) {
     case "HEALTHY":
-      return "text-green-400";
+      return "text-naga-green";
     case "LOW":
-      return "text-yellow-400";
+      return "text-naga-amber";
     case "CRITICAL":
-      return "text-red-400";
+      return "text-naga-red";
     default:
       return "text-naga-blue/50";
   }
@@ -89,11 +89,11 @@ function statusColor(status: CycleStatus): string {
 function statusBadge(status: CycleStatus): string {
   switch (status) {
     case "HEALTHY":
-      return "bg-green-500/15 text-green-400 border border-green-500/30";
+      return "bg-naga-green/10 text-naga-green border border-naga-green/30";
     case "LOW":
-      return "bg-yellow-500/15 text-yellow-400 border border-yellow-500/30";
+      return "bg-naga-amber/10 text-naga-amber border border-naga-amber/30";
     case "CRITICAL":
-      return "bg-red-500/15 text-red-400 border border-red-500/30";
+      return "bg-naga-red/10 text-naga-red border border-naga-red/30";
     default:
       return "bg-naga-blue/10 text-naga-blue/50 border border-naga-blue/20";
   }
@@ -108,11 +108,11 @@ function barWidth(cycles: bigint | null): number {
 function barColor(status: CycleStatus): string {
   switch (status) {
     case "HEALTHY":
-      return "bg-green-500";
+      return "bg-naga-green";
     case "LOW":
-      return "bg-yellow-400";
+      return "bg-naga-amber";
     case "CRITICAL":
-      return "bg-red-500";
+      return "bg-naga-red";
     default:
       return "bg-naga-blue/30";
   }
@@ -294,12 +294,12 @@ const CycleManager: React.FC = () => {
 
   const phaseDotColor: Record<TopUpPhase, string> = {
     IDLE: "bg-gray-600",
-    HASHING: "bg-yellow-400 animate-pulse",
+    HASHING: "bg-naga-amber animate-pulse",
     VALIDATING: "bg-naga-blue animate-pulse",
     SEALING: "bg-purple-400 animate-pulse",
     DISPATCHING: "bg-orange-400 animate-pulse",
-    COMPLETE: "bg-green-400",
-    FAILED: "bg-red-500",
+    COMPLETE: "bg-naga-green",
+    FAILED: "bg-naga-red",
   };
 
   return (
@@ -310,20 +310,20 @@ const CycleManager: React.FC = () => {
           {
             label: "CRITICAL",
             value: criticalCount,
-            color: "text-red-400",
-            border: "border-red-500/30",
+            color: "text-naga-red",
+            border: "border-naga-red/30",
           },
           {
             label: "LOW",
             value: lowCount,
-            color: "text-yellow-400",
-            border: "border-yellow-500/30",
+            color: "text-naga-amber",
+            border: "border-naga-amber/30",
           },
           {
             label: "HEALTHY",
             value: healthyCount,
-            color: "text-green-400",
-            border: "border-green-500/30",
+            color: "text-naga-green",
+            border: "border-naga-green/30",
           },
           {
             label: "UNKNOWN",
@@ -432,7 +432,7 @@ const CycleManager: React.FC = () => {
                 ) : (
                   <CheckCircle
                     size={14}
-                    className="text-green-500/50 ml-auto"
+                    className="text-naga-green/50 ml-auto"
                   />
                 )}
               </div>
@@ -530,7 +530,7 @@ const CycleManager: React.FC = () => {
                           <div
                             className={`w-2 h-2 rounded-full transition-all ${
                               done
-                                ? "bg-green-400"
+                                ? "bg-naga-green"
                                 : active
                                   ? phaseDotColor[stage]
                                   : "bg-gray-700"
@@ -541,7 +541,7 @@ const CycleManager: React.FC = () => {
                               active
                                 ? "text-naga-blue"
                                 : done
-                                  ? "text-green-400/70"
+                                  ? "text-naga-green/70"
                                   : "text-gray-600"
                             }`}
                           >
@@ -566,9 +566,9 @@ const CycleManager: React.FC = () => {
                   <span
                     className={`inline-block text-[9px] font-orbitron px-2 py-0.5 rounded uppercase ${
                       job.phase === "COMPLETE"
-                        ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                        ? "bg-naga-green/15 text-naga-green border border-naga-green/30"
                         : job.phase === "FAILED"
-                          ? "bg-red-500/20 text-red-400 border border-red-500/30"
+                          ? "bg-naga-red/15 text-naga-red border border-naga-red/30"
                           : "bg-naga-blue/10 text-naga-blue border border-naga-blue/30 animate-pulse"
                     }`}
                   >
@@ -596,7 +596,7 @@ const CycleManager: React.FC = () => {
               Trigger Condition
             </div>
             <div>Canister cycles fall below LOW threshold (2 TC)</div>
-            <div className="text-yellow-400/60">
+            <div className="text-naga-amber/60">
               CRITICAL &lt; 0.5 TC — immediate dispatch
             </div>
           </div>
@@ -614,7 +614,7 @@ const CycleManager: React.FC = () => {
               Dispatch Source
             </div>
             <div>cycle_airdropper.check_cycles() → airdrop</div>
-            <div className="text-green-400/60">
+            <div className="text-naga-green/60">
               Immutable log sealed post-dispatch
             </div>
           </div>
@@ -1275,24 +1275,24 @@ const CycleManager: React.FC = () => {
           </div>
           <div className="flex items-center gap-1.5">
             <div
-              className="w-6 h-0.5 bg-green-400"
+              className="w-6 h-0.5 bg-naga-green"
               style={{ borderTop: "1px dashed" }}
             />
             <span>Conditional (threshold)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div
-              className="w-6 h-0.5 bg-yellow-400"
+              className="w-6 h-0.5 bg-naga-amber"
               style={{ borderTop: "1px dashed" }}
             />
             <span>Ledger Drip Feed</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-red-900 border border-red-500" />
+            <div className="w-3 h-3 rounded-sm bg-naga-red/20 border border-naga-red/50" />
             <span>Cryptographic Auth Gate (sovereign_signer)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-green-900 border border-green-500" />
+            <div className="w-3 h-3 rounded-sm bg-naga-green/20 border border-naga-green/50" />
             <span>Autonomous Dispatch (⚡ Refuel)</span>
           </div>
         </div>

@@ -79,7 +79,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
         <div className="flex items-start justify-between gap-1">
           <span
             style={{
-              fontSize: "7px",
+              fontSize: "10px",
               color: "#4A5568",
               fontFamily: "Orbitron, sans-serif",
               flexShrink: 0,
@@ -89,7 +89,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
           </span>
           <span
             style={{
-              fontSize: "7px",
+              fontSize: "10px",
               color: stateColor,
               fontFamily: "monospace",
               textAlign: "right",
@@ -103,7 +103,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
         <div className="flex items-start justify-between gap-1">
           <span
             style={{
-              fontSize: "7px",
+              fontSize: "10px",
               color: "#4A5568",
               fontFamily: "Orbitron, sans-serif",
               flexShrink: 0,
@@ -113,7 +113,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
           </span>
           <span
             style={{
-              fontSize: "7px",
+              fontSize: "10px",
               color: "#29D6FF",
               fontFamily: "monospace",
             }}
@@ -124,7 +124,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
         <div className="flex items-start justify-between gap-1">
           <span
             style={{
-              fontSize: "7px",
+              fontSize: "10px",
               color: "#4A5568",
               fontFamily: "Orbitron, sans-serif",
               flexShrink: 0,
@@ -134,7 +134,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
           </span>
           <span
             style={{
-              fontSize: "7px",
+              fontSize: "10px",
               color: "#29D6FF",
               fontFamily: "monospace",
             }}
@@ -206,7 +206,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
             <div
               style={{
                 fontFamily: "monospace",
-                fontSize: "8px",
+                fontSize: "10px",
                 color: "#4A5568",
                 marginTop: "1px",
               }}
@@ -236,7 +236,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
           <span
             className="font-orbitron"
             style={{
-              fontSize: "8px",
+              fontSize: "10px",
               color: stateColor,
               letterSpacing: "0.12em",
             }}
@@ -260,7 +260,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
         >
           <div
             className="font-orbitron text-naga-muted mb-1"
-            style={{ fontSize: "7px", letterSpacing: "0.12em" }}
+            style={{ fontSize: "10px", letterSpacing: "0.12em" }}
           >
             ENFORCEMENT STATE
           </div>
@@ -278,7 +278,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
             <span
               className="font-orbitron font-bold"
               style={{
-                fontSize: "9px",
+                fontSize: "11px",
                 color: stateColor,
                 letterSpacing: "0.06em",
               }}
@@ -298,7 +298,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
         >
           <div
             className="font-orbitron text-naga-muted mb-1"
-            style={{ fontSize: "7px", letterSpacing: "0.12em" }}
+            style={{ fontSize: "10px", letterSpacing: "0.12em" }}
           >
             ACTIVE INTERCEPT TRAPS
           </div>
@@ -320,7 +320,7 @@ function NagaShieldPanel({ telemetry, compact = false }: NagaShieldPanelProps) {
         >
           <div
             className="font-orbitron text-naga-muted mb-1"
-            style={{ fontSize: "7px", letterSpacing: "0.12em" }}
+            style={{ fontSize: "10px", letterSpacing: "0.12em" }}
           >
             NEUTRALIZED SIGNATURES
           </div>
@@ -420,7 +420,7 @@ function LiveFireTest({ compact }: { compact?: boolean }) {
           <div
             className="font-orbitron"
             style={{
-              fontSize: "8px",
+              fontSize: "10px",
               color: "#4A5568",
               letterSpacing: "0.12em",
               marginBottom: "3px",
@@ -431,7 +431,7 @@ function LiveFireTest({ compact }: { compact?: boolean }) {
           <div
             style={{
               fontFamily: "monospace",
-              fontSize: "9px",
+              fontSize: "11px",
               color: "#4A5568",
             }}
           >
@@ -446,7 +446,7 @@ function LiveFireTest({ compact }: { compact?: boolean }) {
             <div
               style={{
                 fontFamily: "monospace",
-                fontSize: "8px",
+                fontSize: "10px",
                 color: "#4A5568",
                 marginTop: "4px",
               }}
@@ -667,24 +667,28 @@ export default function App() {
             </div>
             <div
               className="text-naga-muted"
-              style={{ fontSize: "8px", letterSpacing: "0.15em" }}
+              style={{ fontSize: "10px", letterSpacing: "0.15em" }}
             >
               SOVEREIGN RESONANT OPERATING SYSTEM · ICP MAINNET
             </div>
           </div>
         </div>
 
-        <nav className="hidden md:flex items-center gap-1" data-ocid="nav.tab">
+        <nav
+          className="hidden md:flex items-center overflow-x-auto scrollbar-hide flex-1 min-w-0 gap-1"
+          data-ocid="nav.tab"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
           {tabs.map((tab) => (
             <button
               type="button"
               key={tab}
               data-ocid={`nav.${tab.toLowerCase().replace(/ /g, "_")}.link`}
               onClick={() => setActiveTab(tab)}
-              className="px-3 py-1.5 rounded transition-all duration-200"
+              className="px-3 py-1.5 rounded transition-all duration-200 flex-shrink-0"
               style={{
                 fontFamily: "Orbitron, sans-serif",
-                fontSize: "9px",
+                fontSize: "10px",
                 letterSpacing: "0.12em",
                 color: activeTab === tab ? "#29D6FF" : "#6F8196",
                 background:
@@ -692,6 +696,7 @@ export default function App() {
                 border: `1px solid ${
                   activeTab === tab ? "rgba(41,214,255,0.35)" : "transparent"
                 }`,
+                whiteSpace: "nowrap",
               }}
             >
               {tab}
@@ -722,7 +727,7 @@ export default function App() {
               <span
                 className="font-orbitron"
                 style={{
-                  fontSize: "8px",
+                  fontSize: "10px",
                   color: "#F6B24A",
                   letterSpacing: "0.12em",
                 }}
@@ -743,7 +748,7 @@ export default function App() {
                 <span
                   className="font-orbitron"
                   style={{
-                    fontSize: "8px",
+                    fontSize: "10px",
                     color: "#28E7B7",
                     letterSpacing: "0.12em",
                   }}
@@ -754,7 +759,7 @@ export default function App() {
                   <span
                     style={{
                       fontFamily: "monospace",
-                      fontSize: "8px",
+                      fontSize: "10px",
                       color: "#6F8196",
                     }}
                   >
@@ -766,7 +771,7 @@ export default function App() {
               <span
                 style={{
                   fontFamily: "monospace",
-                  fontSize: "8px",
+                  fontSize: "10px",
                   color: "#6F8196",
                 }}
               >
@@ -789,7 +794,7 @@ export default function App() {
             <span
               className="font-orbitron"
               style={{
-                fontSize: "7px",
+                fontSize: "10px",
                 color: "#28E7B7",
                 letterSpacing: "0.08em",
               }}
@@ -799,7 +804,7 @@ export default function App() {
             <span
               style={{
                 fontFamily: "monospace",
-                fontSize: "8px",
+                fontSize: "10px",
                 color: "#9AA9BA",
               }}
             >
@@ -811,7 +816,7 @@ export default function App() {
             <div className="status-dot status-dot-green" />
             <span
               className="font-orbitron text-naga-green"
-              style={{ fontSize: "9px" }}
+              style={{ fontSize: "11px" }}
             >
               CONNECTED
             </span>
@@ -924,7 +929,10 @@ export default function App() {
                         <div>
                           <div
                             className="text-naga-muted font-orbitron mb-2"
-                            style={{ fontSize: "9px", letterSpacing: "0.15em" }}
+                            style={{
+                              fontSize: "11px",
+                              letterSpacing: "0.15em",
+                            }}
                           >
                             {kpi.label}
                           </div>
@@ -942,7 +950,7 @@ export default function App() {
                             kpi.id === "kpi_threats") && (
                             <span
                               style={{
-                                fontSize: "8px",
+                                fontSize: "10px",
                                 color: "#F6B24A",
                                 fontFamily: "monospace",
                               }}
@@ -953,7 +961,7 @@ export default function App() {
                           <div
                             className="mt-1"
                             style={{
-                              fontSize: "9px",
+                              fontSize: "11px",
                               color: kpi.color,
                               opacity: 0.7,
                             }}
@@ -1006,7 +1014,7 @@ export default function App() {
                         >
                           <div
                             className="font-orbitron text-naga-muted mb-1"
-                            style={{ fontSize: "8px", letterSpacing: "0.1em" }}
+                            style={{ fontSize: "10px", letterSpacing: "0.1em" }}
                           >
                             DRE TRAP STATUS
                           </div>
@@ -1022,7 +1030,7 @@ export default function App() {
                           </div>
                           <div
                             style={{
-                              fontSize: "9px",
+                              fontSize: "11px",
                               color: "#29D6FF",
                               opacity: 0.7,
                               marginTop: "2px",
@@ -1044,7 +1052,7 @@ export default function App() {
                         >
                           <div
                             className="font-orbitron text-naga-muted mb-1"
-                            style={{ fontSize: "8px", letterSpacing: "0.1em" }}
+                            style={{ fontSize: "10px", letterSpacing: "0.1em" }}
                           >
                             SIGNATURES NEUTRALIZED
                           </div>
@@ -1060,7 +1068,7 @@ export default function App() {
                           </div>
                           <div
                             style={{
-                              fontSize: "9px",
+                              fontSize: "11px",
                               color: "#28E7B7",
                               opacity: 0.7,
                               marginTop: "2px",
@@ -1095,7 +1103,7 @@ export default function App() {
                               <div
                                 className="font-orbitron text-naga-muted mb-1"
                                 style={{
-                                  fontSize: "8px",
+                                  fontSize: "10px",
                                   letterSpacing: "0.1em",
                                 }}
                               >
@@ -1126,7 +1134,7 @@ export default function App() {
                               <div
                                 style={{
                                   fontFamily: "monospace",
-                                  fontSize: "8px",
+                                  fontSize: "10px",
                                   color: "#6F8196",
                                 }}
                               >
@@ -1147,7 +1155,7 @@ export default function App() {
                         >
                           <div
                             className="font-orbitron text-naga-muted mb-1"
-                            style={{ fontSize: "8px", letterSpacing: "0.1em" }}
+                            style={{ fontSize: "10px", letterSpacing: "0.1em" }}
                           >
                             ADAPTIVE OPTIMIZATION ENGINE
                           </div>
@@ -1171,7 +1179,7 @@ export default function App() {
                           <div
                             style={{
                               fontFamily: "monospace",
-                              fontSize: "8px",
+                              fontSize: "10px",
                               color: "#F6B24A",
                               opacity: 0.85,
                               wordBreak: "break-all",
@@ -1240,7 +1248,7 @@ export default function App() {
                     <div className="status-dot status-dot-green" />
                     <span
                       className="font-orbitron text-naga-green"
-                      style={{ fontSize: "9px" }}
+                      style={{ fontSize: "11px" }}
                     >
                       ALL SYSTEMS NOMINAL
                     </span>
@@ -1309,7 +1317,7 @@ export default function App() {
                     <div key={s.label} className="card-hud p-4 text-center">
                       <div
                         className="text-naga-muted font-orbitron"
-                        style={{ fontSize: "9px", letterSpacing: "0.12em" }}
+                        style={{ fontSize: "11px", letterSpacing: "0.12em" }}
                       >
                         {s.label}
                       </div>
@@ -1480,7 +1488,7 @@ export default function App() {
             style={{
               background: "rgba(0,0,0,0.4)",
               borderTop: "1px solid rgba(41,214,255,0.1)",
-              fontSize: "9px",
+              fontSize: "11px",
             }}
           >
             <div className="flex items-center gap-3">
@@ -1524,7 +1532,7 @@ export default function App() {
               <div
                 className="font-orbitron"
                 style={{
-                  fontSize: "9px",
+                  fontSize: "11px",
                   letterSpacing: "0.15em",
                   color: isNominal(liveData.nagaShieldTelemetry.meshIntegrity)
                     ? "#28E7B7"
@@ -1545,7 +1553,7 @@ export default function App() {
 
           <div
             className="font-orbitron text-naga-muted"
-            style={{ fontSize: "9px", letterSpacing: "0.15em" }}
+            style={{ fontSize: "11px", letterSpacing: "0.15em" }}
           >
             RECENT EVENTS
           </div>
@@ -1565,7 +1573,7 @@ export default function App() {
                   <span
                     className="font-orbitron"
                     style={{
-                      fontSize: "7px",
+                      fontSize: "10px",
                       color:
                         t.outcome === "NEUTRALIZED"
                           ? "#28E7B7"
@@ -1576,13 +1584,13 @@ export default function App() {
                   >
                     {t.outcome}
                   </span>
-                  <span style={{ fontSize: "7px", color: "#4A5568" }}>
+                  <span style={{ fontSize: "10px", color: "#4A5568" }}>
                     {t.timestamp.slice(11, 19)}
                   </span>
                 </div>
                 <div
                   className="font-orbitron"
-                  style={{ fontSize: "8px", color: "#F6B24A" }}
+                  style={{ fontSize: "10px", color: "#F6B24A" }}
                 >
                   → {t.targetCanister.toUpperCase().substring(0, 16)}
                 </div>
@@ -1594,7 +1602,7 @@ export default function App() {
 
           <div
             className="font-orbitron text-naga-muted"
-            style={{ fontSize: "9px", letterSpacing: "0.15em" }}
+            style={{ fontSize: "11px", letterSpacing: "0.15em" }}
           >
             CANISTER STATUS
           </div>
@@ -1603,7 +1611,7 @@ export default function App() {
               <div key={c.id} className="flex items-center justify-between">
                 <span
                   style={{
-                    fontSize: "8px",
+                    fontSize: "10px",
                     color: "#6F8196",
                     fontFamily: "monospace",
                   }}
@@ -1639,7 +1647,7 @@ export default function App() {
           <div>
             <div
               className="font-orbitron text-naga-muted mb-1"
-              style={{ fontSize: "9px", letterSpacing: "0.12em" }}
+              style={{ fontSize: "11px", letterSpacing: "0.12em" }}
             >
               DISPATCH LATENCY
             </div>
@@ -1651,7 +1659,7 @@ export default function App() {
             </div>
             <span
               style={{
-                fontSize: "8px",
+                fontSize: "10px",
                 color: "#4A5568",
                 fontFamily: "monospace",
               }}
@@ -1668,7 +1676,7 @@ export default function App() {
               />
               <div
                 className="font-orbitron text-naga-muted"
-                style={{ fontSize: "9px", letterSpacing: "0.15em" }}
+                style={{ fontSize: "11px", letterSpacing: "0.15em" }}
               >
                 LIVE IC DATA
               </div>
@@ -1710,7 +1718,7 @@ export default function App() {
                     >
                       <span
                         style={{
-                          fontSize: "7px",
+                          fontSize: "10px",
                           color: "#4A5568",
                           fontFamily: "Orbitron, sans-serif",
                           flexShrink: 0,
@@ -1720,7 +1728,7 @@ export default function App() {
                       </span>
                       <span
                         style={{
-                          fontSize: "7px",
+                          fontSize: "10px",
                           color: "#29D6FF",
                           fontFamily: "monospace",
                           textAlign: "right",
