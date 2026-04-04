@@ -4,6 +4,7 @@ import {
   CheckCircle,
   Cpu,
   Eye,
+  FileDown,
   Lock,
   Menu,
   Radio,
@@ -22,6 +23,8 @@ import { HoneypotVisualizer } from "./components/HoneypotVisualizer";
 import { NagaTopology } from "./components/NagaTopology";
 import { RawTelemetry } from "./components/RawTelemetry";
 import RootNeuron from "./components/RootNeuron";
+import SROSSubmission from "./components/SROSSubmission";
+import { SROSWhitepaper } from "./components/SROSWhitepaper";
 import { ThreatLog } from "./components/ThreatLog";
 import { VaultIntegrity } from "./components/VaultIntegrity";
 import { useLiveCanisters } from "./hooks/useLiveCanisters";
@@ -37,7 +40,9 @@ type Tab =
   | "REMEDIATION GATEWAY"
   | "CYCLES"
   | "BTM COORDINATION"
-  | "RAW TELEMETRY";
+  | "RAW TELEMETRY"
+  | "WHITEPAPER"
+  | "SUBMISSION";
 
 function formatCyclesShort(n: number) {
   if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(1)}B`;
@@ -519,6 +524,8 @@ export default function App() {
     "CYCLES",
     "BTM COORDINATION",
     "RAW TELEMETRY",
+    "WHITEPAPER",
+    "SUBMISSION",
   ];
 
   const kpiCards = [
@@ -601,6 +608,16 @@ export default function App() {
       icon: <Menu size={18} />,
       label: "Raw Telemetry",
       tab: "RAW TELEMETRY" as Tab,
+    },
+    {
+      icon: <FileDown size={18} />,
+      label: "Whitepaper",
+      tab: "WHITEPAPER" as Tab,
+    },
+    {
+      icon: <FileDown size={18} />,
+      label: "Submission",
+      tab: "SUBMISSION" as Tab,
     },
   ];
 
@@ -1439,6 +1456,20 @@ export default function App() {
                   meshResonanceScore={liveData.meshResonanceScore}
                   isLoading={liveData.isLoading}
                 />
+              </div>
+            )}
+
+            {/* WHITEPAPER */}
+            {activeTab === "WHITEPAPER" && (
+              <div className="p-4">
+                <SROSWhitepaper />
+              </div>
+            )}
+
+            {/* SUBMISSION */}
+            {activeTab === "SUBMISSION" && (
+              <div className="p-4">
+                <SROSSubmission />
               </div>
             )}
           </div>
