@@ -1,5 +1,3 @@
-import { Actor } from "@dfinity/agent";
-import type { IDL } from "@dfinity/candid";
 import {
   Activity,
   AlertTriangle,
@@ -10,7 +8,8 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CANISTER_IDS, agent } from "../lib/canisters";
+import { getCycleAirdropperActor } from "../lib/canisters";
+import { CANISTER_IDS } from "../lib/canisters";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -52,30 +51,10 @@ const CRITICAL_THRESHOLD = 500_000_000_000n; // 0.5 TC
 const LOW_THRESHOLD = 2_000_000_000_000n; // 2 TC
 const HEALTHY_MIN = 5_000_000_000_000n; // 5 TC
 
-// Only canisters with a verified cycles query method
-// const CYCLE_QUERYABLE = ["cycle_airdropper"] as const; // reserved for future use
-
-// All canisters — those without a direct cycles query will be polled via
-// naga_execution.check_mesh_health() as a proxy or show UNKNOWN
 const ALL_CANISTERS = Object.entries(CANISTER_IDS).map(([name, id]) => ({
   name,
   canisterId: id,
 }));
-
-// ─── IDL for management canister status (not available anonymously, so we
-//     use each canister's own check_cycles if exposed) ─────────────────────
-const cycleAirdropperIDL: IDL.InterfaceFactory = ({ IDL: I }) =>
-  I.Service({
-    check_cycles: I.Func([], [I.Nat64], ["query"]),
-  });
-
-function getCycles(canisterId: string): Promise<bigint> {
-  const actor = Actor.createActor<{ check_cycles: () => Promise<bigint> }>(
-    cycleAirdropperIDL,
-    { agent, canisterId },
-  );
-  return actor.check_cycles();
-}
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -168,32 +147,41 @@ const CycleManager: React.FC = () => {
   const [runningTopUp, setRunningTopUp] = useState<string | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // ── Poll cycle_airdropper (only verified cycles query) ──────────────────
+  // ── Poll cycles: only cycle_airdropper exposes check_cycles ────────────
   const pollCycles = useCallback(async () => {
     setIsPolling(true);
 
     const updated = await Promise.all(
       ALL_CANISTERS.map(async ({ name, canisterId }) => {
-        // Only cycle_airdropper exposes check_cycles — use it as live source.
-        // For all others, we attempt the same IDL call; if the canister exposes
-        // check_cycles it will succeed; otherwise we mark UNKNOWN.
-        let cycles: bigint | null = null;
-        let error: string | undefined;
-        try {
-          cycles = await getCycles(canisterId);
-        } catch {
-          // Only cycle_airdropper exposes check_cycles; all others return UNKNOWN
-          cycles = 0n;
-          error = "no cycles query";
+        // Only cycle_airdropper exposes check_cycles — all others are UNKNOWN
+        if (name === "cycle_airdropper") {
+          let cycles: bigint | null = null;
+          let error: string | undefined;
+          try {
+            cycles = await getCycleAirdropperActor().check_cycles();
+          } catch {
+            error = "No query method exposed";
+          }
+          return {
+            id: canisterId,
+            name,
+            canisterId,
+            cycles: error ? null : cycles,
+            status: error ? ("UNKNOWN" as CycleStatus) : getStatus(cycles),
+            lastChecked: new Date().toLocaleTimeString(),
+            error,
+          } satisfies CanisterCycleInfo;
         }
+
+        // All other canisters: no check_cycles method — immediately UNKNOWN
         return {
           id: canisterId,
           name,
           canisterId,
-          cycles: error ? null : cycles,
-          status: error ? ("UNKNOWN" as CycleStatus) : getStatus(cycles),
+          cycles: null,
+          status: "UNKNOWN" as CycleStatus,
           lastChecked: new Date().toLocaleTimeString(),
-          error,
+          error: "No query method exposed",
         } satisfies CanisterCycleInfo;
       }),
     );
@@ -372,6 +360,7 @@ const CycleManager: React.FC = () => {
               type="button"
               onClick={pollCycles}
               disabled={isPolling}
+              data-ocid="cycles.refresh.button"
               className="flex items-center gap-1 text-[10px] font-orbitron text-naga-blue hover:text-white border border-naga-blue/30 hover:border-naga-blue/70 px-3 py-1.5 transition-all disabled:opacity-40"
             >
               <RefreshCw
